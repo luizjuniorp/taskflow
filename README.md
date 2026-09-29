@@ -28,6 +28,12 @@ O **TaskFlow** é uma aplicação web completa (Full Stack) desenvolvida para o 
 
 ---
 
+
+Processo de Desenvolvimento & Uso de IA
+Este projeto foi desenvolvido com foco no aprendizado prático de desenvolvimento web e arquitetura de software. Todo o processo de estruturação do banco de dados, criação da API, desenvolvimento dos componentes em React e explicações conceituais linha por linha foi realizado com o suporte do Gemini (Google AI), atuando como tutor interativo e parceiro de aprendizado.
+
+Desenvolvido por Luiz Junior Pinheiro de Almeida
+
 ## 💻 Como Rodar o Projeto Localmente
 
 ### **Pré-requisitos**
@@ -49,8 +55,3 @@ CREATE TABLE tasks (
     completed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-Processo de Desenvolvimento & Uso de IA
-Este projeto foi desenvolvido com foco no aprendizado prático de desenvolvimento web e arquitetura de software. Todo o processo de estruturação do banco de dados, criação da API, desenvolvimento dos componentes em React e explicações conceituais linha por linha foi realizado com o suporte do Gemini (Google AI), atuando como tutor interativo e parceiro de aprendizado.
-
-Desenvolvido por Luiz Junior Pinheiro de Almeida

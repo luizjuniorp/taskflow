@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import './App.css';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -89,90 +90,89 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-6 flex flex-col items-center">
-      <div className="w-full max-w-2xl">
-        
-        {/* Cabeçalho */}
-        <header className="mb-8 text-center">
-          <h1 className="text-4xl font-extrabold text-blue-500 tracking-wide">
-            TaskFlow
-          </h1>
-          <p className="text-slate-400 text-sm mt-1">
-            Gerenciador de Tarefas
-          </p>
+    <main className="app-shell">
+      <div className="taskflow">
+        <header className="app-header">
+          <span className="eyebrow">Seu espaço, seu ritmo</span>
+          <h1>Lista de Tarefas</h1>
+          <p>Um passo de cada vez. Organize o que importa.</p>
         </header>
 
-        {/* Formulário de Criação */}
-        <form 
-          onSubmit={handleCreateTask} 
-          className="bg-slate-800 p-6 rounded-xl shadow-lg border border-slate-700 mb-8"
-        >
-          <h2 className="text-lg font-bold mb-4 text-slate-200">
-            Nova Tarefa
-          </h2>
-          
-          <div className="flex flex-col gap-4">
+        <form onSubmit={handleCreateTask} className="task-form">
+          <div className="section-heading">
+            <div>
+              <span className="section-kicker">Comece por aqui</span>
+              <h2>Nova tarefa</h2>
+            </div>
+            <span className="leaf-mark" aria-hidden="true">✳</span>
+          </div>
+
+          <div className="form-fields">
             <input
               type="text"
-              placeholder="Título da tarefa (ex: Estudar)"
+              aria-label="Título da tarefa"
+              placeholder="O que você precisa fazer?"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition"
               required
             />
 
             <textarea
-              placeholder="Descrição opcional..."
+              aria-label="Descrição opcional"
+              placeholder="Adicione uma observação (opcional)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition h-20 resize-none"
             />
 
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 rounded-lg transition duration-200 cursor-pointer"
-            >
-              Adicionar Tarefa
+            <button type="submit" className="add-button">
+              <span aria-hidden="true">+</span> Adicionar tarefa
             </button>
           </div>
         </form>
 
-        {/* Lista de Tarefas */}
-        <section>
-          <h2 className="text-xl font-bold mb-4 text-slate-200">
-            Minhas Tarefas ({tasks.length})
-          </h2>
+        <section className="task-section">
+          <div className="list-heading">
+            <div>
+              <span className="section-kicker">No seu tempo</span>
+              <h2>Suas tarefas</h2>
+            </div>
+            <span className="task-count" aria-label={`${tasks.length} tarefas`}>
+              {String(tasks.length).padStart(2, '0')}
+            </span>
+          </div>
 
           {loading ? (
-            <p className="text-slate-400 text-center py-6">Carregando tarefas...</p>
+            <p className="loading-message">Carregando suas tarefas...</p>
           ) : tasks.length === 0 ? (
-            <p className="text-slate-500 text-center py-6 bg-slate-800/50 rounded-lg border border-dashed border-slate-700">
-              Nenhuma tarefa cadastrada. Crie uma acima!
+            <p className="empty-state">
+              <span className="empty-icon" aria-hidden="true">✳</span>
+              Ainda não há tarefas por aqui.
+              <span>Adicione uma nova tarefa para começar.</span>
             </p>
           ) : (
-            <div className="flex flex-col gap-3">
+            <div className="task-list">
               {tasks.map((task) => (
                 <div
                   key={task.id}
-                  className={`p-4 rounded-lg border flex items-start justify-between gap-4 transition ${
+                  className={`task-card ${
                     task.completed
-                      ? 'bg-slate-800/40 border-slate-800 text-slate-500'
-                      : 'bg-slate-800 border-slate-700 text-slate-100'
+                      ? 'is-completed'
+                      : ''
                   }`}
                 >
-                  <div className="flex items-start gap-3 flex-1">
+                  <div className="task-content">
                     <input
                       type="checkbox"
                       checked={task.completed}
                       onChange={() => handleToggleComplete(task.id, task.completed)}
-                      className="mt-1 h-5 w-5 accent-blue-500 cursor-pointer"
+                      aria-label={`Marcar "${task.title}" como ${task.completed ? 'pendente' : 'concluída'}`}
                     />
-                    <div>
-                      <h3 className={`font-semibold ${task.completed ? 'line-through' : ''}`}>
+                    <div className="task-copy">
+                      <h3 className={task.completed ? 'task-title is-completed' : 'task-title'}>
                         {task.title}
                       </h3>
                       {task.description && (
-                        <p className="text-sm text-slate-400 mt-1">
+                        <p className="task-description">
                           {task.description}
                         </p>
                       )}
@@ -180,8 +180,10 @@ function App() {
                   </div>
 
                   <button
+                    type="button"
                     onClick={() => handleDeleteTask(task.id)}
-                    className="text-red-400 hover:text-red-300 font-medium text-sm px-2 py-1 rounded hover:bg-red-500/10 transition cursor-pointer"
+                    className="delete-button"
+                    aria-label={`Excluir "${task.title}"`}
                   >
                     Excluir
                   </button>
@@ -190,9 +192,9 @@ function App() {
             </div>
           )}
         </section>
-
       </div>
-    </div>
+      <footer className="app-footer">Feito com calma, uma tarefa de cada vez.</footer>
+    </main>
   );
 }
 
